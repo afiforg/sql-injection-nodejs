@@ -1,0 +1,24 @@
+{
+  "name": "sql-injection-nodejs",
+  "version": "1.0.0",
+  "description": "Vulnerable Node.js API demonstrating SQL injection (PostgreSQL + optional Redis)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "migrate": "node server.js migrate",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "vulnerability",
+    "sql-injection",
+    "security",
+    "postgres"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "ioredis": "^5.3.2",
+    "pg": "^8.11.3"
+  }
+}
