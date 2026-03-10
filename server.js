@@ -98,7 +98,7 @@ function initRedis() {
 
 // VULNERABLE: SQL Injection via query parameter
 // GET /users?id=1 OR 1=1--
-app.get('/users', async (req, res) => {
+async function getUsersHandler(req, res) {
   const userID = req.query.id || '';
 
   // VULNERABLE: Direct string concatenation - SQL Injection possible
@@ -116,12 +116,12 @@ app.get('/users', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+}
 
 // VULNERABLE: SQL Injection via POST body
 // POST /users/search
 // Body: {"search": "admin' OR '1'='1"}
-app.post('/users/search', async (req, res) => {
+async function searchUsersHandler(req, res) {
   const search = (req.body && req.body.search) ? String(req.body.search) : '';
 
   if (rdb) {
@@ -156,11 +156,11 @@ app.post('/users/search', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+}
 
 // VULNERABLE: SQL Injection via path parameter
 // GET /users/name/admin' OR '1'='1
-app.get('/users/name/:name', async (req, res) => {
+async function getUsersByNameHandler(req, res) {
   const name = req.params.name || '';
 
   // VULNERABLE: Direct string concatenation - SQL Injection possible
@@ -178,7 +178,11 @@ app.get('/users/name/:name', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+}
+
+app.get('/users', getUsersHandler);
+app.post('/users/search', searchUsersHandler);
+app.get('/users/name/:name', getUsersByNameHandler);
 
 async function runMigrations() {
   await initDB();
